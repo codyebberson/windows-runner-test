@@ -1,0 +1,43 @@
+name: Windows build test
+
+on: workflow_dispatch
+
+jobs:
+  build_agent:
+    runs-on: windows-latest
+    env:
+      NODE_VERSION: '18'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install NSIS
+        run: choco install nsis
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build
+        shell: bash
+        run: ./build.sh
