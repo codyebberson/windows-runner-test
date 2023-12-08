@@ -1,0 +1,26 @@
+name: Staging
+concurrency:
+  group: ci-staging-${{ github.sha }}
+  cancel-in-progress: false
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  build:
+    name: Staging
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: "18"
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: "medplum"
+      TURBO_REMOTE_ONLY: true
+    steps:
+      - name: Deploy App
+        run: |
+          echo "Deploying staging app"
+          echo "Author: ${{ github.event.issue.user.login }}"
+          echo "Comment: ${{ github.event.comment.body }}"
+          echo "PR: ${{ github.event.issue.pull_request.url }}"
+          echo "SHA: ${{ github.event.issue.pull_request.head.sha }}"
+          echo "Branch: ${{ github.event.issue.pull_request.head.ref }}"
