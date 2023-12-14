@@ -14,10 +14,14 @@ npm --version
 # Make dist directory
 mkdir -p dist
 
-# Download Shawl
+# Download Shawl exe
+rm -f shawl-v1.4.0-win64.zip
 wget https://github.com/mtkennerly/shawl/releases/download/v1.4.0/shawl-v1.4.0-win64.zip
 unzip shawl-v1.4.0-win64.zip
-mv shawl-v1.4.0-win64.exe dist
+mv shawl.exe dist/shawl-v1.4.0-win64.exe
+
+# Download Shawl legal
+rm -f shawl-v1.4.0-legal.zip
 wget https://github.com/mtkennerly/shawl/releases/download/v1.4.0/shawl-v1.4.0-legal.zip
 unzip shawl-v1.4.0-legal.zip
 mv shawl-v1.4.0-legal.txt dist
